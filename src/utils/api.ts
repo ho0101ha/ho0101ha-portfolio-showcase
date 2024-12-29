@@ -1,8 +1,10 @@
+export {PROJECTS} from "../`_data/contents";
 function extractOwnerAndRepo(repoUrl: string): { owner: string; repo: string } {
     const urlParts = repoUrl.replace("https://github.com/", "").split("/");
+    console.log(urlParts);
     return { owner: urlParts[0], repo: urlParts[1] };
   }
-
+ 
   async function fetchRepoDetails(owner: string, repo: string) {
     const repoResponse = await fetch(
       `https://api.github.com/repos/${owner}/${repo}`,

@@ -1,14 +1,26 @@
-import { fetchRepoData } from "@/utils/api";
 import Hero from "./_components/hero";
+import Gallery from "./_components/gallery";
+import { fetchRepoData } from "@/utils/api";
+import { PROJECTS } from "../../../`_data/contents";
 
 export default async function Home() {
-  const res =  await fetchRepoData();
+  const projects = await Promise.all(
+    PROJECTS.map(async (project) => {
+      const data = await fetchRepoData(project.repoUrl);
+      return {
+        owner: data.owner,
+        slug: data.slug,
+        repoName: data.repoName,
+        topics: data.topics,
+        imageURL: project.imageURL,
+      };
+    })
+  );
+
   return (
     <main className="space-y-32 pt-16">
-	    {/* <p>ヒーローセクション</p> */}
-	    {/* <p>ギャラリー一覧</p> */}
-      <Hero/>
-      <p>ギャラリー一覧</p>
+      <Hero />
+      <Gallery projects={projects.reverse()} />
     </main>
   );
 }
